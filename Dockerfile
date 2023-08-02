@@ -67,19 +67,4 @@ RUN cabal update \
     && cabal build all \
     && mkdir -p $HOME/.local/bin \
     &&  cp -p "$(./scripts/bin-path.sh cardano-node)" $HOME/.local/bin/ \
-    && cp -p "$(./scripts/bin-path.sh cardano-cli)" $HOME/.local/bin/ \
-    && curl -O -J https://book.world.dev.cardano.org/environments/preview/config.json \
-    && curl -O -J https://book.world.dev.cardano.org/environments/preview/db-sync-config.json \
-    && curl -O -J https://book.world.dev.cardano.org/environments/preview/submit-api-config.json \
-    && curl -O -J https://book.world.dev.cardano.org/environments/preview/topology.json \
-    && curl -O -J https://book.world.dev.cardano.org/environments/preview/byron-genesis.json \
-    && curl -O -J https://book.world.dev.cardano.org/environments/preview/shelley-genesis.json \
-    && curl -O -J https://book.world.dev.cardano.org/environments/preview/alonzo-genesis.json \
-    && curl -O -J https://book.world.dev.cardano.org/environments/preview/conway-genesis.json \
-    &&  cardano-node run \
-    --config $HOME/cardano-src/testnet/config.json \
-    --database-path $HOME/cardano-src/testnet/db/ \
-    --socket-path $HOME/cardano-src/testnet/db/node.socket \
-    --host-addr 127.0.0.1 \
-    --port 1337 \
-    --topology $HOME/cardano-src/testnet/topology.json
+    && cp -p "$(./scripts/bin-path.sh cardano-cli)" $HOME/.local/bin/ 
