@@ -24,14 +24,15 @@ libtool \
 autoconf \
 cabal-install -y
 
-# Install GHCUP (Haskell Toolchain Installer)
+# Install GHCUP 
 RUN curl --proto '=https' --tlsv1.2 -sSf https://get-ghcup.haskell.org | sh \
     && echo 'export PATH="/root/.ghcup/bin:$PATH"' >> ~/.bashrc \
     && /bin/bash -c "source /root/.ghcup/env && ghcup install ghc 8.10.7 && ghcup set ghc 8.10.7 && ghcup install cabal 3.6.2.0 && ghcup set cabal 3.6.2.0" 
 
+#Set environment variable so that other temporary containers for different run commands can access it
 ENV PATH="/root/.ghcup/bin:${PATH}"
 
-# Set the working directory
+# Set working directory
 WORKDIR /root/cardano-src
 
 # Clone the repositories
@@ -43,21 +44,20 @@ RUN git clone https://github.com/input-output-hk/cardano-node.git
 
 ENV LD_LIBRARY_PATH=/usr/local/lib
 
-# Set the working directory to cardano-node
+# Set working directory to cardano-node
 WORKDIR /root/cardano-src/cardano-node
 
-# Fetch the tags
+# Fetch tags
 RUN git fetch --all --recurse-submodules --tags \
     && git checkout master
 
 
-# Edit the cabal.project file to set index-state to "HEAD"
+# Made manual changes to cabal.project and hence supplied it seperately
 COPY ./cabal.project /root/cardano-src/cardano-node/ 
 
-# Continue with the rest of the instructions
+
 RUN cabal update
 
-# # Continue with the rest of the instructions
 RUN cabal configure --with-compiler=ghc-8.10.7
 
 ENV PATH="/root/.local/bin:${PATH}"
